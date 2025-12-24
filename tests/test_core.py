@@ -189,3 +189,26 @@ class TestRandomShuffle:
         assert items == [10, 20]
         assert len(result) == 3
         assert result == expected
+
+
+@pytest.mark.parametrize(
+    "bit_width, expected, ctx",
+    [
+        # valid cases
+        (2, 1, nullcontext()),
+        (3, 3, nullcontext()),
+        (8, 127, nullcontext()),
+        (16, 32_767, nullcontext()),
+        (32, 2_147_483_647, nullcontext()),
+        (64, 9_223_372_036_854_775_807, nullcontext()),
+        # invalid cases
+        (0, None, pytest.raises(ValueError)),
+        (1, None, pytest.raises(ValueError)),
+        (-5, None, pytest.raises(ValueError)),
+        (3.5, None, pytest.raises(TypeError)),
+    ],
+)
+def test_signed_max(bit_width: int, expected: int | None, ctx: ContextManager):
+    with ctx:
+        result = purechance.signed_max(bit_width)
+        assert result == expected

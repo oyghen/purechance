@@ -1,7 +1,8 @@
-__all__ = ("Seed", "coinflip", "draw", "get_rng", "integers", "shuffle")
+__all__ = ("Seed", "coinflip", "draw", "get_rng", "integers", "shuffle", "signed_max")
 
 import random
 from collections.abc import Iterator
+from numbers import Integral
 from typing import TypeAlias, TypeVar
 
 T = TypeVar("T")
@@ -45,3 +46,15 @@ def integers(size: int, lower: int, upper: int, seed: Seed = None) -> Iterator[i
 def shuffle(items: list[T], seed: Seed = None) -> list[T]:
     """Return a randomly shuffled copy of the input sequence."""
     return draw(items, replace=False, size=len(items), seed=seed)
+
+
+def signed_max(bit_width: int, /) -> int:
+    """Return the maximum signed integer representable for the given bit width."""
+    if isinstance(bit_width, bool) or not isinstance(bit_width, Integral):
+        raise TypeError(f"unsupported type {type(bit_width).__name__!r}; expected int")
+
+    bit_width = int(bit_width)
+    if bit_width < 2:
+        raise ValueError(f"invalid value {bit_width!r}; expected >= 2")
+
+    return (1 << (bit_width - 1)) - 1
