@@ -18,6 +18,21 @@ def version(
         raise typer.Exit()
 
 
+@app.command()
+def integers(
+    size: int = typer.Argument(1, help="Number of random integers to sample."),
+    lower: int = typer.Option(0, help="Lower bound (inclusive)."),
+    upper: int = typer.Option(
+        purechance.signed_max(32), help="Upper bound (exclusive)."
+    ),
+    seed: int | None = typer.Option(None, help="Seed for the random number generator."),
+) -> None:
+    """Show uniformly sampled random integers."""
+    rng = purechance.get_rng(seed)
+    values = list(purechance.integers(size, lower, upper, rng))
+    console.print(values)
+
+
 def main() -> None:
     """Canonical entry point for CLI execution."""
     app()
