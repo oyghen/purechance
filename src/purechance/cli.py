@@ -38,6 +38,19 @@ def integers(
 
 
 @app.command()
+def pick(
+    items: list[str] = ITEMS_ARG,
+    replace: bool = typer.Option(True, help="Sample with replacement."),
+    size: int = typer.Option(1, help="Number of items to pick."),
+    seed: int | None = SEED_OPT,
+) -> None:
+    """Show randomly picked items from the provided list."""
+    rng = purechance.get_rng(seed)
+    picked = purechance.draw(items, replace, size, rng)
+    console.print(picked)
+
+
+@app.command()
 def shuffle(items: list[str] = ITEMS_ARG, seed: int | None = SEED_OPT) -> None:
     """Show a randomly shuffled list of the provided items."""
     rng = purechance.get_rng(seed)
