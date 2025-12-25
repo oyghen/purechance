@@ -1,4 +1,4 @@
-__all__ = ("Seed", "coinflip", "draw", "get_rng", "integers", "shuffle", "signed_max")
+__all__ = ("Seed", "get_rng", "coinflip", "draw", "shuffle", "integers", "signed_max")
 
 import random
 from collections.abc import Iterator
@@ -7,6 +7,16 @@ from typing import TypeAlias, TypeVar
 
 T = TypeVar("T")
 Seed: TypeAlias = int | random.Random | None
+
+
+def get_rng(seed: Seed = None) -> random.Random:
+    """Return a random.Random instance from the given seed."""
+    if isinstance(seed, random.Random):
+        return seed
+    elif seed is None or isinstance(seed, int):
+        return random.Random(seed)
+    else:
+        raise ValueError(f"invalid {seed=!r}")
 
 
 def coinflip(bias: float, seed: Seed = None) -> bool:
@@ -27,25 +37,15 @@ def draw(items: list[T], replace: bool, size: int, seed: Seed = None) -> list[T]
     return rng.choices(items, k=size) if replace else rng.sample(items, k=size)
 
 
-def get_rng(seed: Seed = None) -> random.Random:
-    """Return a random.Random instance from the given seed."""
-    if isinstance(seed, random.Random):
-        return seed
-    elif seed is None or isinstance(seed, int):
-        return random.Random(seed)
-    else:
-        raise ValueError(f"invalid {seed=!r}")
+def shuffle(items: list[T], seed: Seed = None) -> list[T]:
+    """Return a randomly shuffled copy of the input sequence."""
+    return draw(items, replace=False, size=len(items), seed=seed)
 
 
 def integers(size: int, lower: int, upper: int, seed: Seed = None) -> Iterator[int]:
     """Return random integers between lower (inclusive) and upper (exclusive)."""
     rng = get_rng(seed)
     return (rng.randrange(lower, upper) for _ in range(size))
-
-
-def shuffle(items: list[T], seed: Seed = None) -> list[T]:
-    """Return a randomly shuffled copy of the input sequence."""
-    return draw(items, replace=False, size=len(items), seed=seed)
 
 
 def signed_max(bit_width: int, /) -> int:
