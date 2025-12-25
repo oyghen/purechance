@@ -6,6 +6,10 @@ import purechance
 console = Console()
 app = typer.Typer(add_completion=False)
 
+ITEMS_ARG = typer.Argument(..., help="Input items.")
+
+SEED_OPT = typer.Option(None, help="Seed for the random number generator.")
+
 
 @app.callback(invoke_without_command=True)
 def version(
@@ -25,12 +29,20 @@ def integers(
     upper: int = typer.Option(
         purechance.signed_max(32), help="Upper bound (exclusive)."
     ),
-    seed: int | None = typer.Option(None, help="Seed for the random number generator."),
+    seed: int | None = SEED_OPT,
 ) -> None:
     """Show uniformly sampled random integers."""
     rng = purechance.get_rng(seed)
     values = list(purechance.integers(size, lower, upper, rng))
     console.print(values)
+
+
+@app.command()
+def shuffle(items: list[str] = ITEMS_ARG, seed: int | None = SEED_OPT) -> None:
+    """Show a randomly shuffled list of the provided items."""
+    rng = purechance.get_rng(seed)
+    shuffled = purechance.shuffle(items, rng)
+    console.print(shuffled)
 
 
 def main() -> None:
