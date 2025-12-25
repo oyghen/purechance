@@ -38,7 +38,7 @@ def get_rng(seed: Seed = None) -> random.Random:
 
 
 def integers(size: int, lower: int, upper: int, seed: Seed = None) -> Iterator[int]:
-    """Return random integers between lower (included) and upper (excluded) endpoint."""
+    """Return random integers between lower (inclusive) and upper (exclusive)."""
     rng = get_rng(seed)
     return (rng.randrange(lower, upper) for _ in range(size))
 
