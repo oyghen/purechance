@@ -1,7 +1,7 @@
 __all__ = ("Seed", "get_rng", "coinflip", "draw", "shuffle", "integers", "signed_max")
 
 import random
-from collections.abc import Iterator
+from collections.abc import Iterator, Sequence
 from numbers import Integral
 from typing import TypeAlias, TypeVar
 
@@ -27,14 +27,16 @@ def coinflip(bias: float, seed: Seed = None) -> bool:
     return rng.random() < bias
 
 
-def draw(items: list[T], replace: bool, size: int, seed: Seed = None) -> list[T]:
+def draw(items: Sequence[T], replace: bool, size: int, seed: Seed = None) -> list[T]:
     """Return a new list of items randomly drawn from the input sequence."""
     rng = get_rng(seed)
     if size < 0:
         raise ValueError(f"invalid {size=!r}; expected >= 0")
-    if len(items) == 0 or size == 0:
+    if not items or size == 0:
         return []
-    return rng.choices(items, k=size) if replace else rng.sample(items, k=size)
+    if replace:
+        return rng.choices(items, k=size)
+    return rng.sample(items, k=size)
 
 
 def shuffle(items: list[T], seed: Seed = None) -> list[T]:
