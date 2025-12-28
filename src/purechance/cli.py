@@ -30,7 +30,7 @@ def coinflips(
     bias: float = 0.5,
     seed: int | None = SEED_OPT,
 ) -> bool:
-    """Show outcomes of random coin flips."""
+    """Show the outcomes of random coin flips."""
     rng = purechance.get_rng(seed)
     result = [purechance.coinflip(bias, rng) for _ in range(size)]
     if size > 1:
@@ -60,7 +60,7 @@ def pick(
     size: int = typer.Option(1, help="Number of items to pick."),
     seed: int | None = SEED_OPT,
 ) -> None:
-    """Show randomly picked items from the provided list."""
+    """Show randomly selected items from the input sequence."""
     rng = purechance.get_rng(seed)
     picked = purechance.draw(items, replace, size, rng)
     console.print(picked)
@@ -68,7 +68,7 @@ def pick(
 
 @app.command()
 def shuffle(items: list[str] = ITEMS_ARG, seed: int | None = SEED_OPT) -> None:
-    """Show a randomly shuffled list of the provided items."""
+    """Show the input sequence in a randomly shuffled order."""
     rng = purechance.get_rng(seed)
     shuffled = purechance.shuffle(items, rng)
     console.print(shuffled)
