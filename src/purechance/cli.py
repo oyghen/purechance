@@ -1,3 +1,5 @@
+from collections import Counter
+
 import typer
 from rich.console import Console
 
@@ -20,6 +22,20 @@ def version(
     if show:
         typer.echo(f"{purechance.__name__} {purechance.__version__}")
         raise typer.Exit()
+
+
+@app.command()
+def coinflips(
+    size: int = typer.Argument(1, help="Number of coin flips."),
+    bias: float = 0.5,
+    seed: int | None = SEED_OPT,
+) -> bool:
+    """Show outcomes of random coin flips."""
+    rng = purechance.get_rng(seed)
+    result = [purechance.coinflip(bias, rng) for _ in range(size)]
+    if size > 1:
+        console.print(Counter(result))
+    console.print(result)
 
 
 @app.command()
