@@ -29,7 +29,7 @@ def coinflips(
     size: int = typer.Argument(1, help="Number of coin flips."),
     bias: float = 0.5,
     seed: int | None = SEED_OPT,
-) -> bool:
+) -> None:
     """Show the outcomes of random coin flips."""
     rng = purechance.get_rng(seed)
     result = [purechance.coinflip(bias, rng) for _ in range(size)]
