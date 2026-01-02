@@ -6,7 +6,7 @@ def main() -> None:
         from purechance import cli
     except (ImportError, ModuleNotFoundError) as exc:
         print(
-            "CLI dependencies missing. Use: pip install 'purechance[cli]'",
+            "CLI dependencies missing. Use: uv tool install 'purechance[cli]'",
             file=sys.stderr,
         )
         raise SystemExit(2) from exc

@@ -10,5 +10,5 @@
 </div>
 
 ```shell
-pip install 'purechance[cli]'
+uv tool install 'purechance[cli]'
 ```
