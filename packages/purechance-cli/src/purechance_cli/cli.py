@@ -1,4 +1,5 @@
 from collections import Counter
+from typing import Annotated
 
 import purechance
 import typer
@@ -6,10 +7,6 @@ from rich.console import Console
 
 console = Console()
 app = typer.Typer(add_completion=False)
-
-ITEMS_ARG = typer.Argument(..., help="Input items.")
-
-SEED_OPT = typer.Option(None, help="Seed for the random number generator.")
 
 
 @app.callback(invoke_without_command=True)
@@ -27,7 +24,9 @@ def version(
 def coinflips(
     size: int = typer.Argument(1, help="Number of coin flips."),
     bias: float = 0.5,
-    seed: int | None = SEED_OPT,
+    seed: int | None = typer.Option(
+        None, "--seed", help="Seed for the random number generator."
+    ),
 ) -> None:
     """Show the outcomes of random coin flips."""
     rng = purechance.get_rng(seed)
@@ -44,7 +43,9 @@ def integers(
     upper: int = typer.Option(
         purechance.signed_max(32), help="Upper bound (exclusive)."
     ),
-    seed: int | None = SEED_OPT,
+    seed: int | None = typer.Option(
+        None, "--seed", help="Seed for the random number generator."
+    ),
 ) -> None:
     """Show uniformly sampled random integers."""
     rng = purechance.get_rng(seed)
@@ -54,10 +55,12 @@ def integers(
 
 @app.command()
 def pick(
-    items: list[str] = ITEMS_ARG,
+    items: Annotated[list[str], typer.Argument(help="Input items.")],
     replace: bool = typer.Option(True, help="Sample with replacement."),
     size: int = typer.Option(1, help="Number of items to pick."),
-    seed: int | None = SEED_OPT,
+    seed: int | None = typer.Option(
+        None, "--seed", help="Seed for the random number generator."
+    ),
 ) -> None:
     """Show randomly selected items from the input sequence."""
     rng = purechance.get_rng(seed)
@@ -66,7 +69,12 @@ def pick(
 
 
 @app.command()
-def shuffle(items: list[str] = ITEMS_ARG, seed: int | None = SEED_OPT) -> None:
+def shuffle(
+    items: Annotated[list[str], typer.Argument(help="Input items.")],
+    seed: int | None = typer.Option(
+        None, "--seed", help="Seed for the random number generator."
+    ),
+) -> None:
     """Show the input sequence in a randomly shuffled order."""
     rng = purechance.get_rng(seed)
     shuffled = purechance.shuffle(items, rng)
