@@ -159,12 +159,12 @@ wheels = [
 
 [[package]]
 name = "purechance"
-version = "0.1.0"
+version = "1.0.0rc1"
 source = { editable = "packages/purechance" }
 
 [[package]]
 name = "purechance-cli"
-version = "0.1.0"
+version = "1.0.0rc1"
 source = { editable = "packages/purechance-cli" }
 dependencies = [
     { name = "purechance" },
@@ -179,7 +179,7 @@ requires-dist = [
 
 [[package]]
 name = "purechance-workspace"
-version = "0.1.0"
+version = "1.0.0rc1"
 source = { virtual = "." }
 
 [package.dev-dependencies]
