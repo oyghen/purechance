@@ -1,0 +1,23 @@
+[project]
+name = "purechance-cli"
+version = "0.1.0"
+description = ""
+readme = "README.md"
+authors = [
+    { name = "oyghen", email = "oyghen@duck.com" }
+]
+requires-python = ">=3.11"
+dependencies = [
+    "purechance==0.1.0",
+    "typer>=0.24.1",
+]
+
+[tool.uv.sources]
+purechance = { workspace = true }
+
+[project.scripts]
+purechance = "purechance_cli.cli:main"
+
+[build-system]
+requires = ["uv_build>=0.11.7,<0.12.0"]
+build-backend = "uv_build"

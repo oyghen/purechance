@@ -1,9 +1,8 @@
 from collections import Counter
 
+import purechance
 import typer
 from rich.console import Console
-
-import purechance
 
 console = Console()
 app = typer.Typer(add_completion=False)

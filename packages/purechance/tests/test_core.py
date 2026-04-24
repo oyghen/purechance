@@ -2,9 +2,8 @@ import random
 from contextlib import nullcontext
 from typing import TypeAlias
 
-import pytest
-
 import purechance
+import pytest
 
 ContextManager: TypeAlias = nullcontext[None] | pytest.RaisesExc[ValueError]
 
