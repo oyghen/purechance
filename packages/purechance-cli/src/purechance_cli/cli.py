@@ -12,19 +12,17 @@ app = typer.Typer(add_completion=False)
 @app.callback(invoke_without_command=True)
 def main(
     ctx: typer.Context,
-    show_version: bool = typer.Option(
-        False, "--version", "-V", help="Show app version and exit."
-    ),
+    version: bool = typer.Option(False, "--version", help="Show version and exit."),
 ) -> None:
-    name = purechance.__name__
-    version = typer.style(purechance.__version__, fg=typer.colors.CYAN)
+    pkg_name = purechance.__name__
+    pkg_version = typer.style(purechance.__version__, fg=typer.colors.CYAN)
 
-    if show_version:
-        typer.echo(f"{name} {version}")
+    if version:
+        typer.echo(f"{pkg_name} {pkg_version}")
         raise typer.Exit()
 
     if ctx.invoked_subcommand is None:
-        typer.echo(f"{name} {version} ready. See --help for usage.")
+        typer.echo(f"{pkg_name} {pkg_version} ready. See --help for usage.")
         raise typer.Exit()
 
 
