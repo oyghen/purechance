@@ -45,7 +45,7 @@ def shuffle(items: list[T], seed: Seed = None) -> list[T]:
 
 
 def integers(size: int, lower: int, upper: int, seed: Seed = None) -> Iterator[int]:
-    """Return random integers between lower (inclusive) and upper (exclusive)."""
+    """Return random integers with replacement in [lower, upper)."""
     rng = get_rng(seed)
     return (rng.randrange(lower, upper) for _ in range(size))
 

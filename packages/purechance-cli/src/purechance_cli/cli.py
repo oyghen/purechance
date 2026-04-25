@@ -49,7 +49,7 @@ def integers(
     ),
     seed: int | None = typer.Option(None, "--seed", help="RNG seed."),
 ) -> None:
-    """Show uniformly sampled random integers."""
+    """Show uniformly sampled random integers with replacement."""
     rng = purechance.get_rng(seed)
     values = list(purechance.integers(size, lower, upper, rng))
     console.print(values)
