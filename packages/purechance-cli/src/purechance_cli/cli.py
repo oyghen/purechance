@@ -29,7 +29,7 @@ def main(
 @app.command()
 def coinflips(
     size: int = typer.Argument(1, help="Number of coin flips."),
-    bias: float = 0.5,
+    bias: float = typer.Option(0.5, "--bias", help="Chance of True."),
     seed: int | None = typer.Option(None, "--seed", help="RNG seed."),
 ) -> None:
     """Show the outcomes of random coin flips."""
