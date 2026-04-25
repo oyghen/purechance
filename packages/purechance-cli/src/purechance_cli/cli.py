@@ -10,13 +10,21 @@ app = typer.Typer(add_completion=False)
 
 
 @app.callback(invoke_without_command=True)
-def version(
-    show: bool = typer.Option(
+def main(
+    ctx: typer.Context,
+    show_version: bool = typer.Option(
         False, "--version", "-V", help="Show app version and exit."
     ),
 ) -> None:
-    if show:
-        typer.echo(f"{purechance.__name__} {purechance.__version__}")
+    name = purechance.__name__
+    version = typer.style(purechance.__version__, fg=typer.colors.CYAN)
+
+    if show_version:
+        typer.echo(f"{name} {version}")
+        raise typer.Exit()
+
+    if ctx.invoked_subcommand is None:
+        typer.echo(f"{name} {version} ready. See --help for usage.")
         raise typer.Exit()
 
 
@@ -24,9 +32,7 @@ def version(
 def coinflips(
     size: int = typer.Argument(1, help="Number of coin flips."),
     bias: float = 0.5,
-    seed: int | None = typer.Option(
-        None, "--seed", help="Seed for the random number generator."
-    ),
+    seed: int | None = typer.Option(None, "--seed", help="RNG seed."),
 ) -> None:
     """Show the outcomes of random coin flips."""
     rng = purechance.get_rng(seed)
@@ -43,9 +49,7 @@ def integers(
     upper: int = typer.Option(
         purechance.signed_max(32), help="Upper bound (exclusive)."
     ),
-    seed: int | None = typer.Option(
-        None, "--seed", help="Seed for the random number generator."
-    ),
+    seed: int | None = typer.Option(None, "--seed", help="RNG seed."),
 ) -> None:
     """Show uniformly sampled random integers."""
     rng = purechance.get_rng(seed)
@@ -58,9 +62,7 @@ def pick(
     items: Annotated[list[str], typer.Argument(help="Input items.")],
     replace: bool = typer.Option(True, help="Sample with replacement."),
     size: int = typer.Option(1, help="Number of items to pick."),
-    seed: int | None = typer.Option(
-        None, "--seed", help="Seed for the random number generator."
-    ),
+    seed: int | None = typer.Option(None, "--seed", help="RNG seed."),
 ) -> None:
     """Show randomly selected items from the input sequence."""
     rng = purechance.get_rng(seed)
@@ -71,16 +73,9 @@ def pick(
 @app.command()
 def shuffle(
     items: Annotated[list[str], typer.Argument(help="Input items.")],
-    seed: int | None = typer.Option(
-        None, "--seed", help="Seed for the random number generator."
-    ),
+    seed: int | None = typer.Option(None, "--seed", help="RNG seed."),
 ) -> None:
     """Show the input sequence in a randomly shuffled order."""
     rng = purechance.get_rng(seed)
     shuffled = purechance.shuffle(items, rng)
     console.print(shuffled)
-
-
-def main() -> None:
-    """Canonical entry point for CLI execution."""
-    app()
