@@ -32,7 +32,7 @@ def coinflips(
     bias: float = typer.Option(0.5, "--bias", help="Chance of True."),
     seed: int | None = typer.Option(None, "--seed", help="RNG seed."),
 ) -> None:
-    """Show the outcomes of random coin flips."""
+    """Display the outcomes of random coin flips."""
     rng = purechance.get_rng(seed)
     result = [purechance.coinflip(bias, rng) for _ in range(size)]
     if size > 1:
@@ -49,7 +49,7 @@ def integers(
     ),
     seed: int | None = typer.Option(None, "--seed", help="RNG seed."),
 ) -> None:
-    """Show uniformly sampled random integers with replacement."""
+    """Display uniformly sampled random integers with replacement."""
     rng = purechance.get_rng(seed)
     values = list(purechance.integers(size, lower, upper, rng))
     console.print(values)
@@ -62,7 +62,7 @@ def pick(
     size: int = typer.Option(1, help="Number of items to pick."),
     seed: int | None = typer.Option(None, "--seed", help="RNG seed."),
 ) -> None:
-    """Show randomly selected items from the input sequence."""
+    """Display randomly selected items from the input sequence."""
     rng = purechance.get_rng(seed)
     picked = purechance.draw(items, replace, size, rng)
     console.print(picked)
@@ -73,7 +73,7 @@ def shuffle(
     items: Annotated[list[str], typer.Argument(help="Input items.")],
     seed: int | None = typer.Option(None, "--seed", help="RNG seed."),
 ) -> None:
-    """Show the input sequence in a randomly shuffled order."""
+    """Display the input sequence in a randomly shuffled order."""
     rng = purechance.get_rng(seed)
     shuffled = purechance.shuffle(items, rng)
     console.print(shuffled)
